@@ -1,10 +1,11 @@
 import React from 'react';
 import badgesData from '@/lib/badges.json';
-import { Eye, UserCheck, UserPlus, CheckCircle2, XCircle } from 'lucide-react';
+import { Eye, UserCheck, UserPlus, CheckCircle2, XCircle, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { TableRow, TableCell } from '@/components/ui/table';
 import { useLeaderboardStore } from '@/store/leaderboard.store';
 import { useDashboardStore } from '@/store/dashboard.store';
+import downloadCertificate from '@/utils/downloadCertificate';
 
 const LeaderboardRow = ({ participant }) => {
     const { setSelectedUserForDashboard } = useLeaderboardStore() // For choosing the user
@@ -148,17 +149,28 @@ const LeaderboardRow = ({ participant }) => {
                     <span className="text-sm text-slate-500 dark:text-slate-400">No badges earned</span>
                 )}
             </TableCell>
-            <TableCell className="py-4 px-6 text-right">
-                <button
-                    onClick={() => {
-                        setSelectedUserForDashboard(participant.username);
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-emerald-700 bg-emerald-50 hover:bg-emerald-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 dark:bg-violet-500/10 dark:text-violet-300 dark:hover:bg-violet-500/20 dark:focus:ring-violet-500 transition-colors duration-200"
-                    title="View dashboard"
-                >
-                    <Eye className="w-4 h-4" />
-                    <span>View</span>
-                </button>
+            <TableCell className="py-4 px-4">
+                <div className="flex flex-col items-end space-y-2">
+                    <button
+                        onClick={() => downloadCertificate(participant.fullName)}
+                        className="cursor-pointer group relative flex items-center justify-center px-3 py-1.5 w-full sm:w-auto text-sm font-medium rounded-lg border border-emerald-200 dark:border-violet-500/30 text-emerald-700 dark:text-violet-300 bg-emerald-50/50 dark:bg-violet-500/10 hover:bg-emerald-100 dark:hover:bg-violet-500/20 transition-all duration-200 overflow-hidden"
+                        title="Download certificate"
+                    >
+                        <Download className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                        <span className="truncate">Certificate</span>
+                        <span className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-full group-hover:translate-x-0"></span>
+                    </button>
+
+                    <button
+                        onClick={() => setSelectedUserForDashboard(participant.username)}
+                        className="cursor-pointer group relative flex items-center justify-center px-3 py-1.5 w-full sm:w-auto text-sm font-medium rounded-lg border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-500/10 hover:bg-emerald-50/80 dark:hover:bg-emerald-500/20 transition-all duration-200 overflow-hidden"
+                        title="View dashboard"
+                    >
+                        <Eye className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                        <span className="truncate">Dashboard</span>
+                        <span className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-full group-hover:translate-x-0"></span>
+                    </button>
+                </div>
             </TableCell>
         </TableRow >
     );
